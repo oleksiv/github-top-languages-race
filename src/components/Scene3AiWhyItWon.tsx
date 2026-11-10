@@ -2,7 +2,7 @@ import type React from 'react';
 import {Easing, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {FONTS} from '../fonts';
 import {THEME} from '../theme';
-import {CheckCircleIcon, TerminalIcon} from './Icons';
+import {ArrowRightIcon, CheckCircleIcon, TerminalIcon} from './Icons';
 import {LanguageBadge} from './LanguageBadge';
 
 export const Scene3AiWhyItWon: React.FC = () => {
@@ -37,10 +37,34 @@ export const Scene3AiWhyItWon: React.FC = () => {
   ];
 
   const cardSpring = spring({
-    frame: Math.max(0, frame - 22),
+    frame: Math.max(0, frame - 18),
     fps,
     config: {damping: 18, stiffness: 160},
   });
+
+  const loopSteps = [
+    {
+      step: '1. Agent Generates',
+      code: 'user.accountId',
+      status: 'Hallucinated prop',
+      tone: 'amber' as const,
+      triggerFrame: 32,
+    },
+    {
+      step: '2. tsc --noEmit',
+      code: 'Error TS2339 (40ms)',
+      status: 'Caught at compile',
+      tone: 'vermilion' as const,
+      triggerFrame: 52,
+    },
+    {
+      step: '3. Agent Self-Heals',
+      code: 'user.id // ✓ string',
+      status: 'Verified contract',
+      tone: 'emerald' as const,
+      triggerFrame: 72,
+    },
+  ];
 
   return (
     <div
@@ -150,12 +174,12 @@ export const Scene3AiWhyItWon: React.FC = () => {
                 gap: 16,
               }}
             >
-              <LanguageBadge id={item.id} size={44} />
+              <LanguageBadge id={item.id} size={46} />
               <div
                 style={{
-                  width: 150,
+                  width: 154,
                   fontFamily: FONTS.display,
-                  fontSize: 25,
+                  fontSize: 26,
                   fontWeight: item.id === 'ts' ? 800 : 600,
                   color: THEME.textPrimary,
                   flexShrink: 0,
@@ -167,7 +191,7 @@ export const Scene3AiWhyItWon: React.FC = () => {
               <div
                 style={{
                   flex: 1,
-                  height: 32,
+                  height: 34,
                   backgroundColor: '#0A0D13',
                   borderRadius: 8,
                   overflow: 'hidden',
@@ -185,10 +209,10 @@ export const Scene3AiWhyItWon: React.FC = () => {
 
               <div
                 style={{
-                  width: 148,
+                  width: 152,
                   textAlign: 'right',
                   fontFamily: FONTS.mono,
-                  fontSize: 24,
+                  fontSize: 25,
                   fontWeight: 700,
                   color: item.id === 'ts' ? '#FFFFFF' : THEME.textSecondary,
                   fontVariantNumeric: 'tabular-nums',
@@ -200,7 +224,7 @@ export const Scene3AiWhyItWon: React.FC = () => {
 
               <div
                 style={{
-                  width: 132,
+                  width: 134,
                   textAlign: 'right',
                   fontFamily: FONTS.mono,
                   fontSize: 20,
@@ -226,7 +250,7 @@ export const Scene3AiWhyItWon: React.FC = () => {
           padding: '24px 28px',
           display: 'flex',
           flexDirection: 'column',
-          gap: 18,
+          gap: 20,
           opacity: interpolate(cardSpring, [0, 1], [0, 1]),
           translate: `0px ${interpolate(cardSpring, [0, 1], [24, 0])}px`,
         }}
@@ -248,7 +272,7 @@ export const Scene3AiWhyItWon: React.FC = () => {
                 color: THEME.textPrimary,
               }}
             >
-              The AI Agent Verification Loop
+              The AI Agent Compiler Loop
             </span>
           </div>
 
@@ -260,12 +284,98 @@ export const Scene3AiWhyItWon: React.FC = () => {
               fontFamily: FONTS.mono,
               fontSize: 18,
               fontWeight: 700,
-              padding: '5px 14px',
+              padding: '6px 14px',
               borderRadius: 8,
             }}
           >
             94% of LLM errors = type mismatches
           </span>
+        </div>
+
+        {/* 3-Step Animated Compiler Feedback Pipeline */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'stretch',
+            justifyContent: 'space-between',
+            gap: 12,
+          }}
+        >
+          {loopSteps.map((s, idx) => {
+            const active = frame >= s.triggerFrame;
+            const borderCol =
+              s.tone === 'emerald'
+                ? 'rgba(34, 211, 151, 0.55)'
+                : s.tone === 'vermilion'
+                  ? 'rgba(255, 79, 40, 0.55)'
+                  : 'rgba(245, 184, 65, 0.55)';
+            const textCol =
+              s.tone === 'emerald'
+                ? THEME.emeraldBright
+                : s.tone === 'vermilion'
+                  ? '#FF7A59'
+                  : THEME.amber;
+
+            return (
+              <div
+                key={s.step}
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                }}
+              >
+                <div
+                  style={{
+                    flex: 1,
+                    backgroundColor: active ? '#0B121E' : '#0B0F17',
+                    border: active
+                      ? `1.5px solid ${borderCol}`
+                      : `1px solid ${THEME.borderDark}`,
+                    borderRadius: 12,
+                    padding: '16px 16px',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: FONTS.sans,
+                      fontSize: 18,
+                      fontWeight: 700,
+                      color: THEME.textSecondary,
+                    }}
+                  >
+                    {s.step}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: FONTS.mono,
+                      fontSize: 20,
+                      fontWeight: 700,
+                      color: active ? '#FFFFFF' : THEME.textMuted,
+                      marginTop: 8,
+                    }}
+                  >
+                    {s.code}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: FONTS.mono,
+                      fontSize: 16,
+                      fontWeight: 600,
+                      color: active ? textCol : THEME.textMuted,
+                      marginTop: 6,
+                    }}
+                  >
+                    {s.status}
+                  </div>
+                </div>
+                {idx < loopSteps.length - 1 ? (
+                  <ArrowRightIcon size={20} color="#58A6FF" />
+                ) : null}
+              </div>
+            );
+          })}
         </div>
 
         {/* Two-Column Comparison: Untyped JS vs Strict TypeScript */}
@@ -282,33 +392,30 @@ export const Scene3AiWhyItWon: React.FC = () => {
               backgroundColor: '#0B0F17',
               border: `1px solid ${THEME.borderDark}`,
               borderRadius: 12,
-              padding: '18px 20px',
+              padding: '16px 20px',
             }}
           >
             <div
               style={{
                 fontFamily: FONTS.sans,
-                fontSize: 22,
+                fontSize: 21,
                 fontWeight: 700,
                 color: '#FF7A59',
-                marginBottom: 10,
+                marginBottom: 6,
               }}
             >
-              Untyped JavaScript
+              Dynamic JS: Fails at Runtime
             </div>
             <div
               style={{
-                fontFamily: FONTS.mono,
-                fontSize: 18,
-                lineHeight: 1.5,
+                fontFamily: FONTS.sans,
+                fontSize: 19,
+                lineHeight: 1.4,
                 color: THEME.textSecondary,
               }}
             >
-              1. Agent invents <span style={{color: '#FACC15'}}>user.orgId</span>
-              <br />
-              2. No build-time check
-              <br />
-              3. Fails silently in prod
+              66% of devs say fixing "almost right" AI code takes longer without
+              compiler checks.
             </div>
           </div>
 
@@ -318,7 +425,7 @@ export const Scene3AiWhyItWon: React.FC = () => {
               backgroundColor: '#0B1320',
               border: '1px solid rgba(34, 211, 151, 0.45)',
               borderRadius: 12,
-              padding: '18px 20px',
+              padding: '16px 20px',
             }}
           >
             <div
@@ -327,28 +434,25 @@ export const Scene3AiWhyItWon: React.FC = () => {
                 alignItems: 'center',
                 gap: 8,
                 fontFamily: FONTS.sans,
-                fontSize: 22,
+                fontSize: 21,
                 fontWeight: 700,
                 color: THEME.emeraldBright,
-                marginBottom: 10,
+                marginBottom: 6,
               }}
             >
-              <CheckCircleIcon size={22} color={THEME.emeraldBright} />
-              <span>Strict TypeScript (tsc)</span>
+              <CheckCircleIcon size={20} color={THEME.emeraldBright} />
+              <span>Strict TS: Caught in 40ms</span>
             </div>
             <div
               style={{
-                fontFamily: FONTS.mono,
-                fontSize: 18,
-                lineHeight: 1.5,
+                fontFamily: FONTS.sans,
+                fontSize: 19,
+                lineHeight: 1.4,
                 color: THEME.textPrimary,
               }}
             >
-              1. <span style={{color: '#58A6FF'}}>TS2339</span> caught in 40ms
-              <br />
-              2. Exact type fed back to agent
-              <br />
-              3. Self-heals before commit
+              Types constrain the search space and give agents deterministic
+              pass/fail signals.
             </div>
           </div>
         </div>
