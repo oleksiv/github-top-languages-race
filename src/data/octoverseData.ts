@@ -11,10 +11,7 @@ export type LanguageId =
 export type LanguageMeta = {
   readonly id: LanguageId;
   readonly name: string;
-  readonly shortCode: string;
   readonly barColor: string;
-  readonly badgeBg: string;
-  readonly badgeText: string;
 };
 
 // Restrained palette: TypeScript stands out in signature blue;
@@ -23,66 +20,42 @@ export const LANGUAGES: Record<LanguageId, LanguageMeta> = {
   ts: {
     id: 'ts',
     name: 'TypeScript',
-    shortCode: 'TS',
     barColor: '#3178C6',
-    badgeBg: '#3178C6',
-    badgeText: '#FFFFFF',
   },
   py: {
     id: 'py',
     name: 'Python',
-    shortCode: 'PY',
     barColor: '#3B4963',
-    badgeBg: '#EAB308',
-    badgeText: '#0F131A',
   },
   js: {
     id: 'js',
     name: 'JavaScript',
-    shortCode: 'JS',
     barColor: '#334056',
-    badgeBg: '#FACC15',
-    badgeText: '#0F131A',
   },
   java: {
     id: 'java',
     name: 'Java',
-    shortCode: 'JV',
     barColor: '#283346',
-    badgeBg: '#334155',
-    badgeText: '#CBD5E1',
   },
   cpp: {
     id: 'cpp',
     name: 'C++',
-    shortCode: 'C++',
     barColor: '#242F40',
-    badgeBg: '#293548',
-    badgeText: '#94A3B8',
   },
   csharp: {
     id: 'csharp',
     name: 'C#',
-    shortCode: 'C#',
     barColor: '#222C3C',
-    badgeBg: '#263142',
-    badgeText: '#94A3B8',
   },
   php: {
     id: 'php',
     name: 'PHP',
-    shortCode: 'PHP',
     barColor: '#202A38',
-    badgeBg: '#232E3E',
-    badgeText: '#94A3B8',
   },
   ruby: {
     id: 'ruby',
     name: 'Ruby',
-    shortCode: 'RB',
     barColor: '#1E2735',
-    badgeBg: '#212B3B',
-    badgeText: '#94A3B8',
   },
 };
 
