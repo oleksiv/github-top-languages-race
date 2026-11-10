@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "dev": "remotion studio src/index.ts",
-    "render": "remotion render src/index.ts"
+    "render": "remotion render src/index.ts TypeScriptNumberOne out/typescript-number-one.mp4",
+    "render:carousel": "remotion render src/index.ts TypeScriptNumberOne out/carousel --frames=50,135,360,510,620,820 --image-format=png --sequence"
   },
   "dependencies": {
     "@remotion/cli": "4.0.542",
