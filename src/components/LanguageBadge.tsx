@@ -9,10 +9,11 @@ type LanguageBadgeProps = {
 
 export const LanguageBadge: React.FC<LanguageBadgeProps> = ({
   id,
-  size = 48,
+  size = 44,
 }) => {
   const meta = LANGUAGES[id];
-  const fontSize = id === 'php' ? Math.round(size * 0.34) : Math.round(size * 0.42);
+  const fontSize =
+    meta.shortCode.length >= 3 ? Math.round(size * 0.33) : Math.round(size * 0.41);
 
   return (
     <div
@@ -22,10 +23,6 @@ export const LanguageBadge: React.FC<LanguageBadgeProps> = ({
         borderRadius: Math.round(size * 0.22),
         backgroundColor: meta.badgeBg,
         color: meta.badgeText,
-        border:
-          id === 'ts'
-            ? '1px solid rgba(255, 255, 255, 0.28)'
-            : '1px solid rgba(255, 255, 255, 0.12)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

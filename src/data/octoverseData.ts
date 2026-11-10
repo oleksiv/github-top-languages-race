@@ -1,24 +1,30 @@
-export type LanguageId = 'ts' | 'py' | 'js' | 'java' | 'csharp' | 'php';
+export type LanguageId =
+  | 'ts'
+  | 'py'
+  | 'js'
+  | 'java'
+  | 'cpp'
+  | 'csharp'
+  | 'php'
+  | 'ruby';
 
 export type LanguageMeta = {
   readonly id: LanguageId;
   readonly name: string;
   readonly shortCode: string;
-  readonly color: string;
-  readonly surfaceColor: string;
-  readonly borderColor: string;
+  readonly barColor: string;
   readonly badgeBg: string;
   readonly badgeText: string;
 };
 
+// Restrained palette: TypeScript stands out in signature blue;
+// Python & JS have subtle warm accents; other languages use quiet slate tones.
 export const LANGUAGES: Record<LanguageId, LanguageMeta> = {
   ts: {
     id: 'ts',
     name: 'TypeScript',
     shortCode: 'TS',
-    color: '#3178C6',
-    surfaceColor: 'rgba(49, 120, 198, 0.24)',
-    borderColor: '#58A6FF',
+    barColor: '#3178C6',
     badgeBg: '#3178C6',
     badgeText: '#FFFFFF',
   },
@@ -26,51 +32,57 @@ export const LANGUAGES: Record<LanguageId, LanguageMeta> = {
     id: 'py',
     name: 'Python',
     shortCode: 'PY',
-    color: '#F59E0B',
-    surfaceColor: 'rgba(245, 158, 11, 0.13)',
-    borderColor: 'rgba(245, 158, 11, 0.42)',
-    badgeBg: '#F59E0B',
-    badgeText: '#111318',
+    barColor: '#3B4963',
+    badgeBg: '#EAB308',
+    badgeText: '#0F131A',
   },
   js: {
     id: 'js',
     name: 'JavaScript',
     shortCode: 'JS',
-    color: '#FACC15',
-    surfaceColor: 'rgba(250, 204, 21, 0.11)',
-    borderColor: 'rgba(250, 204, 21, 0.36)',
+    barColor: '#334056',
     badgeBg: '#FACC15',
-    badgeText: '#111318',
+    badgeText: '#0F131A',
   },
   java: {
     id: 'java',
     name: 'Java',
     shortCode: 'JV',
-    color: '#64748B',
-    surfaceColor: 'rgba(100, 116, 139, 0.12)',
-    borderColor: 'rgba(100, 116, 139, 0.32)',
+    barColor: '#283346',
     badgeBg: '#334155',
-    badgeText: '#F3F5F8',
+    badgeText: '#CBD5E1',
+  },
+  cpp: {
+    id: 'cpp',
+    name: 'C++',
+    shortCode: 'C++',
+    barColor: '#242F40',
+    badgeBg: '#293548',
+    badgeText: '#94A3B8',
   },
   csharp: {
     id: 'csharp',
     name: 'C#',
     shortCode: 'C#',
-    color: '#526077',
-    surfaceColor: 'rgba(82, 96, 119, 0.12)',
-    borderColor: 'rgba(82, 96, 119, 0.28)',
-    badgeBg: '#283244',
-    badgeText: '#D6DFEC',
+    barColor: '#222C3C',
+    badgeBg: '#263142',
+    badgeText: '#94A3B8',
   },
   php: {
     id: 'php',
     name: 'PHP',
     shortCode: 'PHP',
-    color: '#475569',
-    surfaceColor: 'rgba(71, 85, 105, 0.12)',
-    borderColor: 'rgba(71, 85, 105, 0.28)',
-    badgeBg: '#222B3A',
-    badgeText: '#B8C4D6',
+    barColor: '#202A38',
+    badgeBg: '#232E3E',
+    badgeText: '#94A3B8',
+  },
+  ruby: {
+    id: 'ruby',
+    name: 'Ruby',
+    shortCode: 'RB',
+    barColor: '#1E2735',
+    badgeBg: '#212B3B',
+    badgeText: '#94A3B8',
   },
 };
 
@@ -79,170 +91,229 @@ export const LANGUAGE_IDS: readonly LanguageId[] = [
   'py',
   'js',
   'java',
+  'cpp',
   'csharp',
   'php',
+  'ruby',
 ];
 
-export type EraSnapshot = {
+export type AnnualPoint = {
   readonly year: number;
-  readonly yearLabel: string;
-  readonly tsRankLabel: string;
-  readonly tsNumericRank: number; // For trajectory curve (25 down to 1)
-  readonly milestoneTitle: string;
-  readonly milestoneDetail: string;
-  readonly metrics: Record<
-    LanguageId,
-    {
-      readonly slotIndex: number; // 0 (top row) to 5 (bottom row)
-      readonly octoverseRankLabel: string;
-      readonly contributorsMillions: number;
-    }
-  >;
+  readonly label: string;
+  readonly milestone: string;
+  // Monthly active contributors in millions
+  readonly values: Record<LanguageId, number>;
 };
 
-export const TYPESCRIPT_HISTORY: readonly EraSnapshot[] = [
+export const ANNUAL_SERIES: readonly AnnualPoint[] = [
   {
     year: 2012,
-    yearLabel: 'Oct 2012',
-    tsRankLabel: 'Unranked',
-    tsNumericRank: 24,
-    milestoneTitle: 'TypeScript v0.8 Open-Sourced',
-    milestoneDetail: 'Anders Hejlsberg releases TS 0.8 at Microsoft; JS & PHP dominate GitHub',
-    metrics: {
-      js: {slotIndex: 0, octoverseRankLabel: '#1', contributorsMillions: 0.42},
-      py: {slotIndex: 1, octoverseRankLabel: '#3', contributorsMillions: 0.24},
-      java: {slotIndex: 2, octoverseRankLabel: '#4', contributorsMillions: 0.21},
-      php: {slotIndex: 3, octoverseRankLabel: '#5', contributorsMillions: 0.19},
-      csharp: {slotIndex: 4, octoverseRankLabel: '#8', contributorsMillions: 0.09},
-      ts: {slotIndex: 5, octoverseRankLabel: 'v0.8', contributorsMillions: 0.015},
+    label: '2012',
+    milestone: 'Oct 2012 · TypeScript v0.8 open-sourced',
+    values: {
+      js: 0.42,
+      py: 0.25,
+      java: 0.22,
+      php: 0.2,
+      ruby: 0.18,
+      cpp: 0.13,
+      csharp: 0.09,
+      ts: 0.015,
+    },
+  },
+  {
+    year: 2013,
+    label: '2013',
+    milestone: '2013 · Early compiler & IDE tooling',
+    values: {
+      js: 0.54,
+      py: 0.31,
+      java: 0.29,
+      php: 0.25,
+      ruby: 0.21,
+      cpp: 0.16,
+      csharp: 0.12,
+      ts: 0.028,
     },
   },
   {
     year: 2014,
-    yearLabel: '2014',
-    tsRankLabel: '#18',
-    tsNumericRank: 18,
-    milestoneTitle: 'TypeScript 1.0 Moves to GitHub',
-    milestoneDetail: 'Compiler goes self-hosted on GitHub under Apache 2.0 license',
-    metrics: {
-      js: {slotIndex: 0, octoverseRankLabel: '#1', contributorsMillions: 0.68},
-      java: {slotIndex: 1, octoverseRankLabel: '#2', contributorsMillions: 0.41},
-      py: {slotIndex: 2, octoverseRankLabel: '#3', contributorsMillions: 0.39},
-      php: {slotIndex: 3, octoverseRankLabel: '#4', contributorsMillions: 0.32},
-      csharp: {slotIndex: 4, octoverseRankLabel: '#7', contributorsMillions: 0.16},
-      ts: {slotIndex: 5, octoverseRankLabel: '#18', contributorsMillions: 0.05},
+    label: '2014',
+    milestone: '2014 · TypeScript 1.0 moves to GitHub',
+    values: {
+      js: 0.68,
+      java: 0.41,
+      py: 0.39,
+      php: 0.32,
+      ruby: 0.23,
+      cpp: 0.21,
+      csharp: 0.16,
+      ts: 0.052,
+    },
+  },
+  {
+    year: 2015,
+    label: '2015',
+    milestone: '2015 · ES6 support & VS Code launch',
+    values: {
+      js: 0.82,
+      java: 0.51,
+      py: 0.48,
+      php: 0.38,
+      ruby: 0.24,
+      cpp: 0.27,
+      csharp: 0.22,
+      ts: 0.095,
     },
   },
   {
     year: 2016,
-    yearLabel: '2016',
-    tsRankLabel: '#12',
-    tsNumericRank: 12,
-    milestoneTitle: 'TS 2.0 + VS Code + Angular 2',
-    milestoneDetail: 'strictNullChecks, @types on npm, and VS Code ignite adoption',
-    metrics: {
-      js: {slotIndex: 0, octoverseRankLabel: '#1', contributorsMillions: 0.98},
-      java: {slotIndex: 1, octoverseRankLabel: '#2', contributorsMillions: 0.61},
-      py: {slotIndex: 2, octoverseRankLabel: '#3', contributorsMillions: 0.59},
-      php: {slotIndex: 3, octoverseRankLabel: '#4', contributorsMillions: 0.43},
-      csharp: {slotIndex: 4, octoverseRankLabel: '#6', contributorsMillions: 0.29},
-      ts: {slotIndex: 5, octoverseRankLabel: '#12', contributorsMillions: 0.14},
+    label: '2016',
+    milestone: '2016 · TypeScript 2.0 + @types + Angular 2',
+    values: {
+      js: 0.98,
+      java: 0.61,
+      py: 0.59,
+      php: 0.43,
+      cpp: 0.34,
+      csharp: 0.29,
+      ts: 0.255,
+      ruby: 0.245,
     },
   },
   {
     year: 2017,
-    yearLabel: '2017',
-    tsRankLabel: '#10',
-    tsNumericRank: 10,
-    milestoneTitle: 'Enters GitHub Octoverse Top 10',
-    milestoneDetail: 'First appearance in GitHub Top 10 most-used languages',
-    metrics: {
-      js: {slotIndex: 0, octoverseRankLabel: '#1', contributorsMillions: 1.15},
-      py: {slotIndex: 1, octoverseRankLabel: '#2', contributorsMillions: 0.78},
-      java: {slotIndex: 2, octoverseRankLabel: '#3', contributorsMillions: 0.71},
-      php: {slotIndex: 3, octoverseRankLabel: '#4', contributorsMillions: 0.49},
-      csharp: {slotIndex: 4, octoverseRankLabel: '#6', contributorsMillions: 0.41},
-      ts: {slotIndex: 5, octoverseRankLabel: '#10', contributorsMillions: 0.26},
+    label: '2017',
+    milestone: '2017 · Breaks into GitHub Octoverse Top 10',
+    values: {
+      js: 1.15,
+      py: 0.78,
+      java: 0.71,
+      php: 0.49,
+      cpp: 0.42,
+      csharp: 0.38,
+      ts: 0.35,
+      ruby: 0.25,
     },
   },
   {
     year: 2018,
-    yearLabel: '2018',
-    tsRankLabel: '#7',
-    tsNumericRank: 7,
-    milestoneTitle: 'Climbs to #7 as React Adopts TS',
-    milestoneDetail: 'Create React App adds native TypeScript support; passes C & Shell',
-    metrics: {
-      js: {slotIndex: 0, octoverseRankLabel: '#1', contributorsMillions: 1.28},
-      py: {slotIndex: 1, octoverseRankLabel: '#2', contributorsMillions: 0.94},
-      java: {slotIndex: 2, octoverseRankLabel: '#3', contributorsMillions: 0.82},
-      php: {slotIndex: 3, octoverseRankLabel: '#4', contributorsMillions: 0.53},
-      csharp: {slotIndex: 4, octoverseRankLabel: '#6', contributorsMillions: 0.46},
-      ts: {slotIndex: 5, octoverseRankLabel: '#7', contributorsMillions: 0.44},
+    label: '2018',
+    milestone: '2018 · Create React App adds native TypeScript',
+    values: {
+      js: 1.28,
+      py: 0.94,
+      java: 0.82,
+      php: 0.53,
+      cpp: 0.5,
+      ts: 0.49,
+      csharp: 0.45,
+      ruby: 0.26,
+    },
+  },
+  {
+    year: 2019,
+    label: '2019',
+    milestone: '2019 · Surges past C# and C++',
+    values: {
+      js: 1.4,
+      py: 1.1,
+      java: 0.9,
+      ts: 0.69,
+      php: 0.56,
+      cpp: 0.55,
+      csharp: 0.52,
+      ruby: 0.27,
     },
   },
   {
     year: 2020,
-    yearLabel: '2020',
-    tsRankLabel: '#4',
-    tsNumericRank: 4,
-    milestoneTitle: 'Surges to #4 Past PHP & C#',
-    milestoneDetail: 'Full-stack TypeScript becomes standard across Node & frontend',
-    metrics: {
-      js: {slotIndex: 0, octoverseRankLabel: '#1', contributorsMillions: 1.52},
-      py: {slotIndex: 1, octoverseRankLabel: '#2', contributorsMillions: 1.26},
-      java: {slotIndex: 2, octoverseRankLabel: '#3', contributorsMillions: 0.98},
-      ts: {slotIndex: 3, octoverseRankLabel: '#4', contributorsMillions: 0.89},
-      csharp: {slotIndex: 4, octoverseRankLabel: '#5', contributorsMillions: 0.64},
-      php: {slotIndex: 5, octoverseRankLabel: '#6', contributorsMillions: 0.58},
+    label: '2020',
+    milestone: '2020 · Reaches #4 on GitHub Octoverse',
+    values: {
+      js: 1.52,
+      py: 1.26,
+      java: 0.98,
+      ts: 0.91,
+      csharp: 0.64,
+      cpp: 0.61,
+      php: 0.58,
+      ruby: 0.28,
+    },
+  },
+  {
+    year: 2021,
+    label: '2021',
+    milestone: '2021 · Full-stack TypeScript becomes standard',
+    values: {
+      js: 1.61,
+      py: 1.4,
+      java: 1.08,
+      ts: 1.05,
+      csharp: 0.72,
+      cpp: 0.68,
+      php: 0.61,
+      ruby: 0.29,
+    },
+  },
+  {
+    year: 2022,
+    label: '2022',
+    milestone: '2022 · Next.js, Vite & Astro default to TS',
+    values: {
+      js: 1.68,
+      py: 1.54,
+      ts: 1.23,
+      java: 1.18,
+      csharp: 0.79,
+      cpp: 0.75,
+      php: 0.64,
+      ruby: 0.3,
     },
   },
   {
     year: 2023,
-    yearLabel: '2023',
-    tsRankLabel: '#3',
-    tsNumericRank: 3,
-    milestoneTitle: 'Overtakes Java to Enter Top 3',
-    milestoneDetail: 'Next.js, Vite, Astro, and SvelteKit default to TypeScript out of the box',
-    metrics: {
-      js: {slotIndex: 0, octoverseRankLabel: '#1', contributorsMillions: 1.71},
-      py: {slotIndex: 1, octoverseRankLabel: '#2', contributorsMillions: 1.69},
-      ts: {slotIndex: 2, octoverseRankLabel: '#3', contributorsMillions: 1.41},
-      java: {slotIndex: 3, octoverseRankLabel: '#4', contributorsMillions: 1.24},
-      csharp: {slotIndex: 4, octoverseRankLabel: '#5', contributorsMillions: 0.88},
-      php: {slotIndex: 5, octoverseRankLabel: '#7', contributorsMillions: 0.67},
+    label: '2023',
+    milestone: '2023 · Solidifies #3 ahead of Java',
+    values: {
+      js: 1.72,
+      py: 1.69,
+      ts: 1.42,
+      java: 1.24,
+      cpp: 0.86,
+      csharp: 0.84,
+      php: 0.67,
+      ruby: 0.31,
     },
   },
   {
     year: 2024,
-    yearLabel: '2024',
-    tsRankLabel: '#3',
-    tsNumericRank: 3,
-    milestoneTitle: 'AI Coding Wave Accelerates TS',
-    milestoneDetail: 'Python leads on ML boom; TypeScript closes gap to 160K contributors',
-    metrics: {
-      py: {slotIndex: 0, octoverseRankLabel: '#1', contributorsMillions: 1.74},
-      js: {slotIndex: 1, octoverseRankLabel: '#2', contributorsMillions: 1.72},
-      ts: {slotIndex: 2, octoverseRankLabel: '#3', contributorsMillions: 1.58},
-      java: {slotIndex: 3, octoverseRankLabel: '#4', contributorsMillions: 1.31},
-      csharp: {slotIndex: 4, octoverseRankLabel: '#5', contributorsMillions: 0.96},
-      php: {slotIndex: 5, octoverseRankLabel: '#7', contributorsMillions: 0.72},
+    label: '2024',
+    milestone: '2024 · AI wave pushes Python #1; TS closes in',
+    values: {
+      py: 1.84,
+      js: 1.78,
+      ts: 1.66,
+      java: 1.31,
+      cpp: 0.94,
+      csharp: 0.91,
+      php: 0.71,
+      ruby: 0.32,
     },
   },
   {
     year: 2025,
-    yearLabel: 'Aug 2025',
-    tsRankLabel: '#1',
-    tsNumericRank: 1,
-    milestoneTitle: 'TypeScript Reaches #1 on GitHub',
-    milestoneDetail: '+66.6% YoY surge (+1.05M new contributors) overtakes Python & JS',
-    metrics: {
-      ts: {slotIndex: 0, octoverseRankLabel: '#1', contributorsMillions: 2.636},
-      py: {slotIndex: 1, octoverseRankLabel: '#2', contributorsMillions: 2.594},
-      js: {slotIndex: 2, octoverseRankLabel: '#3', contributorsMillions: 2.15},
-      java: {slotIndex: 3, octoverseRankLabel: '#4', contributorsMillions: 1.48},
-      csharp: {slotIndex: 4, octoverseRankLabel: '#5', contributorsMillions: 1.12},
-      php: {slotIndex: 5, octoverseRankLabel: '#7', contributorsMillions: 0.79},
+    label: 'Aug 2025',
+    milestone: 'Aug 2025 · TypeScript reaches #1 (+66.6% YoY)',
+    values: {
+      ts: 2.636,
+      py: 2.594,
+      js: 2.15,
+      java: 1.48,
+      cpp: 1.08,
+      csharp: 1.04,
+      php: 0.78,
+      ruby: 0.35,
     },
   },
 ];
